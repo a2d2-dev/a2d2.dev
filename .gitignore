@@ -1,0 +1,6 @@
+# local artifacts — not part of the site
+screenshot-*.png
+dns-before.md
+.vercel/
+.DS_Store
+node_modules/
