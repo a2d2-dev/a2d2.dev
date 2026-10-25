@@ -13,6 +13,9 @@
 <link rel="alternate" hreflang="zh-CN" href="https://a2d2.dev/zh/essays">
 <link rel="alternate" hreflang="x-default" href="https://a2d2.dev/essays">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;display=swap">
 <link rel="stylesheet" href="/style.css">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://a2d2.dev/essays">
@@ -35,18 +38,20 @@
 </head>
 <body>
 <header class="site">
-  <div class="page">
-    <a class="brand" href="/">A²D²</a>
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="A²D² — Home"><span class="mark" aria-hidden="true"></span><span class="word">A²D²</span><span class="tagline">Agentic Agile Driven Development</span></a>
     <nav aria-label="Primary">
-      <a href="/essays">Essay</a>
-      <a href="https://x.com/a2d2dev">X</a>
+      <a href="/essays" aria-current="page">Essays</a>
       <a href="https://github.com/a2d2-dev">GitHub</a>
-      <span class="lang" role="group" aria-label="Language"><span aria-current="true">EN</span> / <a href="/zh/essays" hreflang="zh-CN" lang="zh-CN">中文</a></span>
+      <a href="https://x.com/a2d2dev">X</a>
+      <span class="lang" role="group" aria-label="Language"><span aria-current="true">EN</span><a href="/zh/essays" hreflang="zh-CN" lang="zh-CN">中文</a></span>
     </nav>
   </div>
 </header>
-<main class="page">
+<main class="page article">
 
+  <header class="article-head">
+  <p class="kicker">Essay · The theory behind A²D²</p>
   <h1>Structure Against Uncertainty</h1>
   <p class="sub">The theory behind A²D² — Agentic Agile Driven Development</p>
   <p class="byline">by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
@@ -55,6 +60,7 @@
     <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">Context 第一性原理</a> ·
     <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">系统描述问题</a> ·
     <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">用结构对抗不确定性</a></p>
+  </header>
 
   <nav class="toc" aria-label="Contents">
     <strong>Contents</strong>
@@ -210,14 +216,18 @@
   <p class="muted small">The cybernetic framework is drawn, as in the originals, from Jin Guantao’s <i>Cybernetics and Scientific Methodology</i> (《控制论与科学方法论》), Harold Black’s negative-feedback amplifier, and Kalman’s optimal estimation.</p>
   <p class="byline">— <a href="https://x.com/neolf">@neolf</a> (Neov) · <a href="/">a2d2.dev</a></p>
 </main>
-<footer>
-  <div class="page">
-    <span>A²D² — Agentic Agile Driven Development · by <a href="https://x.com/neolf">@neolf</a> (Neov)</span>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-brand">
+      <span class="word">A²D²</span>
+      <p>A²D² — Agentic Agile Driven Development · by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
+    </div>
     <nav aria-label="Links">
       <a href="https://x.com/a2d2dev">X · @a2d2dev</a>
       <a href="https://x.com/neolf">X · @neolf</a>
       <a href="https://github.com/a2d2-dev">GitHub · a2d2-dev</a>
     </nav>
+    <span class="lang" role="group" aria-label="Language"><span aria-current="true">EN</span><a href="/zh/essays" hreflang="zh-CN" lang="zh-CN">中文</a></span>
   </div>
 </footer>
 </body>

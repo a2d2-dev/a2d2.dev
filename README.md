@@ -8,6 +8,7 @@ Source for the static site of **A²D² — Agentic Agile Driven Development** (�
   - `zh/index.html`, `zh/essays/index.html` — Chinese counterparts at `/zh` and `/zh/essays` (hreflang-linked; English is x-default)
   - `style.css`, `favicon.svg`, `og.png`
   - `vercel.json` — `cleanUrls` / no trailing slash, so `/essays`, `/zh`, `/zh/essays` are the canonical URLs
+- Type: Source Serif 4 (headings, long-form) + Inter (UI, abstracts) from Google Fonts with `display=swap`; Chinese pages add Noto Serif SC 600 for headings, body uses the system Chinese sans stack. Light ivory theme with a quiet dark mode.
 - Vercel Web Analytics is loaded on every page via `/_vercel/insights/script.js` (active once Web Analytics is enabled for the Vercel project).
 - Deployed on Vercel; every push to `main` deploys to production, other branches get preview deployments.
 - Links: <https://github.com/a2d2-dev> · X: [@a2d2dev](https://x.com/a2d2dev) · [@neolf](https://x.com/neolf)
