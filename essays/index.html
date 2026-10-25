@@ -8,56 +8,56 @@
 <meta name="description" content="One English essay presenting the theory behind A²D²: the four constraints of LLMs, the shift from execution to description, and the cybernetic toolbox for countering uncertainty with structure. By @neolf (Neov).">
 <meta name="author" content="Neov (@neolf)">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="https://a2d2.dev/essays">
+<link rel="alternate" hreflang="en" href="https://a2d2.dev/essays">
+<link rel="alternate" hreflang="zh-CN" href="https://a2d2.dev/zh/essays">
+<link rel="alternate" hreflang="x-default" href="https://a2d2.dev/essays">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://a2d2.dev/essays">
 <meta property="og:site_name" content="A²D²">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta property="og:title" content="Structure Against Uncertainty: The Theory Behind A²D²">
 <meta property="og:description" content="What kind of machine an LLM is, why input quality becomes the dominant constraint, and how structure — not component precision — counters uncertainty. By @neolf (Neov).">
 <meta property="og:image" content="https://a2d2.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="article:author" content="https://x.com/neolf">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@a2d2dev">
 <meta name="twitter:creator" content="@neolf">
 <meta name="twitter:title" content="Structure Against Uncertainty: The Theory Behind A²D²">
-<meta name="twitter:description" content="The theory behind A²D², in one English essay. By @neolf (Neov).">
+<meta name="twitter:description" content="What kind of machine an LLM is, why input quality becomes the dominant constraint, and how structure — not component precision — counters uncertainty. By @neolf (Neov).">
 <meta name="twitter:image" content="https://a2d2.dev/og.png">
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<header class="nav">
-  <div class="wrap">
-    <a class="logo" href="/" aria-label="A²D² home"><img src="/favicon.svg" alt="" width="28" height="28">A²D²</a>
+<header class="site">
+  <div class="page">
+    <a class="brand" href="/">A²D²</a>
     <nav aria-label="Primary">
-      <a class="hide-sm" href="/#theory">Theory</a>
       <a href="/essays">Essay</a>
       <a href="https://x.com/a2d2dev">X</a>
-      <a class="hide-sm" href="https://github.com/a2d2-dev">GitHub</a>
+      <a href="https://github.com/a2d2-dev">GitHub</a>
+      <span class="lang" role="group" aria-label="Language"><span aria-current="true">EN</span> / <a href="/zh/essays" hreflang="zh-CN" lang="zh-CN">中文</a></span>
     </nav>
   </div>
 </header>
+<main class="page">
 
-<main id="top">
-<article class="long">
-  <span class="eyebrow"><b>●</b> A²D² · Theory</span>
   <h1>Structure Against Uncertainty</h1>
-  <p class="expand" style="font-size:clamp(19px,2.4vw,24px)">The theory behind A²D² — Agentic Agile Driven Development</p>
+  <p class="sub">The theory behind A²D² — Agentic Agile Driven Development</p>
   <p class="byline">by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
 
-  <p class="src" style="margin-top:22px">This page presents, in English and as one argument, the theory of three essays originally written in Chinese. It follows their content only. Originals:
+  <p class="muted small">This page presents, in English and as one argument, the theory of three essays originally written in Chinese. It follows their content only. Originals:
     <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">Context 第一性原理</a> ·
     <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">系统描述问题</a> ·
     <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">用结构对抗不确定性</a></p>
 
   <nav class="toc" aria-label="Contents">
-    <p>CONTENTS</p>
+    <strong>Contents</strong>
     <ol>
       <li><a href="#machine">A machine we do not understand</a></li>
       <li><a href="#constraints">Four constraints</a></li>
@@ -68,16 +68,19 @@
       <li><a href="#structure">Structure determines precision</a></li>
       <li><a href="#humans">What remains human</a></li>
       <li><a href="#questions">The questions that remain</a></li>
+      <li><a href="#next">Coming next</a></li>
       <li><a href="#sources">The original essays</a></li>
     </ol>
   </nav>
 
   <h2 id="machine">1. A machine we do not understand</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw"><i>Context First Principles, introduction</i> (Chinese) ↗</a></p>
   <p>When you write code with an AI agent, you are not using a smarter autocomplete. You are using a machine whose operating principles differ from all traditional software. A traditional program is deterministic: given an input, its output is predictable, its state persists in memory, and it knows what it knows. An LLM is not like that.</p>
   <p>Most developers start using this machine without understanding it. A project holds PRDs, architecture documents, deployment procedures and coding conventions — should they go into the prompt, become tools, or sit in files for the agent to look up? Usually the answer is intuition: stuff things in, and when it does not work, add more rules.</p>
   <p>Before Newton, people knew that apples fall and that the moon does not; nobody knew the two were governed by the same law. LLM-driven development is in a similar place. We know prompts must be good, context must not be too long, outputs must be verified, several agents beat one. But these are scattered pieces of experience, not a unified theory: we do not know how they relate, which are fundamental and which derived, or when one of them will stop working. What is missing is not more experience but a framework that explains why the experience works and when it fails.</p>
 
   <h2 id="constraints">2. Four constraints</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw"><i>Context First Principles, part 1</i> (Chinese) ↗</a></p>
   <p>The framework starts from four core constraints of LLMs. L1–L3 are hard facts of the Transformer architecture. L0 is a mental model distilled from intuition and practice — not rigorously provable like the others, but with strong explanatory power.</p>
 
   <h3>L0 — Convergence and its cost</h3>
@@ -94,6 +97,7 @@
   <p>An LLM produces the statistically most likely token sequence, not a logically correct conclusion. It can write completely wrong code fluently and confidently, without knowing it is wrong. Self-checks such as self-consistency or self-critique help, but they use the same probabilistic model to check its own output, so systematic biases go undetected. Final responsibility for verification must sit with external mechanisms — and its strength must not be uniform: renaming a variable and changing a database migration need very different checks.</p>
 
   <h2 id="architecture">3. From constraints to architecture</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw"><i>Context First Principles, parts 2–4 and conclusion</i> (Chinese) ↗</a></p>
   <p>Constraints say what is limited, not what to do. A few bridge theorems take the step from constraint to solution. Each asks which <em>kind</em> of solution structure most naturally satisfies the constraints; engineering rarely has a single correct answer, and RAG, retrieval, function calling and other techniques can all work in particular cases.</p>
   <ul>
     <li><strong>Selective loading (from L1).</strong> Finite context plus heterogeneous knowledge means knowledge should be layered by relevance to the task and loaded independently. Without structure you can only load everything (overflow) or cut at random (losing what matters). Whatever the technique, the principle of structured management plus on-demand loading holds.</li>
@@ -119,12 +123,14 @@
   <p>Every layer exists not because it looks tidy but because a constraint is there that cannot be bypassed. Four constraints, one architecture: the constraints cannot be violated; the architecture can evolve. And they point away from the traditional workflow engine that commands agents. What the system really has to do is assemble the right context for each agent at each moment, and let the agent judge what to do.</p>
 
   <h2 id="description">4. The executor changed: from compensator to amplifier</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ"><i>The System Description Problem, introduction</i> (Chinese) ↗</a></p>
   <p>The second line of the argument looks not at the machine’s internals but at the control structure of software development itself.</p>
   <p>You ask an LLM to add permission checks to a new endpoint using the project’s existing authentication module. It returns clean, type-checked code — that ignores your module and implements fresh JWT validation the way its training data most often does. You add a rule: use the existing AuthService. Next time it uses AuthService, but calls it wrongly, because it does not know about its special session-timeout handling. Rules pile up, and it feels like whack-a-mole. That feeling is right: the problem is not too few rules, it is that the nature of the executor has changed.</p>
   <blockquote><p>A human developer is a compensator. An LLM is a conditional amplifier.</p></blockquote>
   <p>Humans fill incomplete documentation with experience, call someone to resolve ambiguity, ask the person who made an unrecorded decision. An LLM, given complete input, executes faster and more consistently than humans within its training distribution. Given input with gaps, it does not stop and say “not enough information” — it fills the gap with the most common statistical pattern and amplifies that biased signal at machine throughput, looking just as fluent and confident as normal output. The core danger is not that this happens but that it is invisible: you do not know where it filled in. When the executor turns from compensator into amplifier, input quality turns from “nice to have” into the dominant constraint.</p>
 
   <h2 id="control">5. Development as control</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ"><i>The System Description Problem, parts 1–2</i> (Chinese) ↗</a></p>
   <p>Cybernetics studies how a system pushes itself from its current state to a target state. Following Jin Guantao’s <i>Cybernetics and Scientific Methodology</i>: the <em>possibility space</em> is every state a thing could become next. An empty repository could become any system; every line of code, design decision and interface narrows the space. When only the target remains — a system that meets all requirements and runs correctly — development is done. Software development is narrowing the possibility space to the target state; that is control. <em>Control capability</em> is the ratio of the space before and after an intervention, and every tool has a ceiling: a compiler excludes type errors but cannot judge business logic; review catches semantic issues but depends on attention.</p>
   <p>Four progressive control methods each address the ceiling of the previous one — and they map onto four stages of AI coding that many developers have lived through:</p>
   <ol>
@@ -139,6 +145,7 @@
   <p>All four methods assume the system fits within the controller’s capability. Beyond that, the system must first be decomposed — itself a conjugate transform: split an uncontrollable whole into separately controllable parts, control each, and merge the results. The hard requirement is that every part is <em>self-contained</em>: within the consumer’s context limits, everything needed to process the unit must be present. A unit with correct logical boundaries but missing information is, to the consumer, damaged input; the transform is lossy and the output distorted.</p>
 
   <h2 id="spec-harness">6. Specs and harnesses</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ"><i>The System Description Problem, part 3</i> (Chinese) ↗</a></p>
   <h3>Spec side: make the input signal reliable</h3>
   <p>No complex system’s full spec fits in one context, so the answer is decomposition — and decomposition is leverage: when each unit’s spec can be fully loaded, the LLM works reliably within each unit, and the sum of the units exceeds what any single context could hold. Three questions follow:</p>
   <ul>
@@ -157,6 +164,7 @@
   <p>Completeness is an engineering problem with solutions; structural consistency has a direction; semantic consistency has no mature answer yet. New LLM-era sensors — description compilers, and design-document tests that walk user stories through a design to find process defects at the PRD stage — move feedback earlier, but mostly address the structural level. The spec-layer harness is the most important engineering and research direction of the next stage.</p>
 
   <h2 id="structure">7. Structure determines precision</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA"><i>Countering Uncertainty with Structure</i> (Chinese) ↗</a></p>
   <p>In 1927, Harold Black at Bell Labs faced cascaded vacuum-tube amplifiers for long-distance telephone lines, each with unstable gain. The intuitive fix was better tubes. Black changed the structure instead, feeding part of the output back to the input, and arrived at a theorem that shaped engineering ever since:</p>
   <blockquote><p>The overall precision of a closed-loop system depends mainly on the precision of its feedback channel, not of its forward channel.</p></blockquote>
   <p>A 10% fluctuation in forward gain can be pressed to 0.1% at the output, provided the feedback channel is precise enough. The LLM is the imprecise tube: probabilistic, invisibly deviating, and not something we can make precise within engineering control. Hence the meta-theorem: <strong>system precision is a function of structure</strong>; component precision is only one input. Feedback loops, redundant voting, formal constraints, isolation boundaries and online identification are all structure added along some dimension.</p>
@@ -173,6 +181,7 @@
   <p>Spec-driven development and harness engineering correspond to feedforward (information) and feedback (time) — the two highest-leverage dimensions. The others are not optional: redundancy for high-risk modules, cascades for long agent workflows, robust design for LLM-facing architecture, adaptation for long-running practice. Each dimension pays back independently, and the total is multiplicative. Most teams should start with feedback (sensor infrastructure) and feedforward (spec engineering), then add structure where gaps appear. LLM engineering is systems engineering, and the core capability of systems engineering is designing structure.</p>
 
   <h2 id="humans">8. What remains human</h2>
+  <p class="src">Source: <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ"><i>The System Description Problem, part 4 and conclusion</i> (Chinese) ↗</a></p>
   <p>Conjugate control places firm demands on both of its ends, and neither can be automated away.</p>
   <p><strong>L — writing is thinking.</strong> Turning tacit knowledge into a spec is not just recording what is already known. Writing the authentication interface, an engineer suddenly realizes: what happens when the session expires? I never thought about that. You find the gaps in your tacit knowledge by trying to say it. Outsourcing specs entirely to an LLM may yield a perfectly formatted document while losing the cognitive gain of writing it.</p>
   <p><strong>L′ — review needs depth.</strong> The quality of reviewing LLM output depends on how deeply a person understands the system, and that depth comes from continuous interaction — writing architecture, making decisions, debugging incidents. Reduce the human to clicking “approve” and depth erodes, and both ends of conjugate control weaken.</p>
@@ -188,26 +197,21 @@
   </ul>
   <p>The underlying insight of cybernetics is one: when you cannot raise component precision, counter uncertainty with structure. The more dimensions of structure, the larger the product, and the more tolerant the system becomes of imprecise components.</p>
 
-  <div class="card next" style="margin:40px 0 8px">
-    <span class="num">COMING NEXT</span>
-    <h3>Conversation or task?</h3>
-    <p>The next essay distinguishes conversation from task in how we communicate with LLMs — the distinction that leads to A²D²’s domain objects.</p>
-  </div>
+  <h2 id="next">Coming next</h2>
+  <p>The next essay distinguishes conversation from task in how we communicate with LLMs — the distinction that leads to A²D²’s domain objects. Title to be announced.</p>
 
   <h2 id="sources">The original essays</h2>
-  <p class="src">All three are by Neov (@neolf), written in Chinese. This page is an English presentation of their argument; for the full reasoning, read the originals.</p>
-  <ul class="sources">
-    <li><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">《Context 第一性原理：从大模型的物理约束推导工程架构》</a><small>Context First Principles: Deriving Engineering Architecture from the Physical Constraints of LLMs — sections 1–3</small></li>
-    <li><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">《系统描述问题：当瓶颈从执行层转移到描述层》</a><small>The System Description Problem: When the Bottleneck Shifts from the Execution Layer to the Description Layer — sections 4–6 and 8</small></li>
-    <li><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">《用结构对抗不确定性：LLM 工程的控制论工具箱》</a><small>Countering Uncertainty with Structure: A Cybernetic Toolbox for LLM Engineering — section 7</small></li>
+  <p class="muted small">All three are by Neov (@neolf), written in Chinese. This page is an English presentation of their argument; for the full reasoning, read the originals.</p>
+  <ul>
+    <li><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">《Context 第一性原理：从大模型的物理约束推导工程架构》</a> <br><span class="muted small">Context First Principles: Deriving Engineering Architecture from the Physical Constraints of LLMs — sections 1–3</span></li>
+    <li><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">《系统描述问题：当瓶颈从执行层转移到描述层》</a> <br><span class="muted small">The System Description Problem: When the Bottleneck Shifts from the Execution Layer to the Description Layer — sections 4–6 and 8</span></li>
+    <li><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">《用结构对抗不确定性：LLM 工程的控制论工具箱》</a> <br><span class="muted small">Countering Uncertainty with Structure: A Cybernetic Toolbox for LLM Engineering — section 7</span></li>
   </ul>
-  <p class="src">The cybernetic framework is drawn, as in the originals, from Jin Guantao’s <i>Cybernetics and Scientific Methodology</i> (《控制论与科学方法论》), Harold Black’s negative-feedback amplifier, and Kalman’s optimal estimation.</p>
+  <p class="muted small">The cybernetic framework is drawn, as in the originals, from Jin Guantao’s <i>Cybernetics and Scientific Methodology</i> (《控制论与科学方法论》), Harold Black’s negative-feedback amplifier, and Kalman’s optimal estimation.</p>
   <p class="byline">— <a href="https://x.com/neolf">@neolf</a> (Neov) · <a href="/">a2d2.dev</a></p>
-</article>
 </main>
-
 <footer>
-  <div class="wrap">
+  <div class="page">
     <span>A²D² — Agentic Agile Driven Development · by <a href="https://x.com/neolf">@neolf</a> (Neov)</span>
     <nav aria-label="Links">
       <a href="https://x.com/a2d2dev">X · @a2d2dev</a>

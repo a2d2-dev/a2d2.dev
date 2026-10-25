@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="a2d2-build" content="git-autodeploy-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A²D² — 智能体敏捷驱动开发</title>
+<meta name="description" content="A²D²（智能体敏捷驱动开发）从理论出发：大模型的物理约束、从执行层转移到描述层的瓶颈、用结构对抗不确定性。三篇文章，作者 @neolf（Neov）。">
+<meta name="author" content="Neov (@neolf)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://a2d2.dev/zh">
+<link rel="alternate" hreflang="en" href="https://a2d2.dev/">
+<link rel="alternate" hreflang="zh-CN" href="https://a2d2.dev/zh">
+<link rel="alternate" hreflang="x-default" href="https://a2d2.dev/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://a2d2.dev/zh">
+<meta property="og:site_name" content="A²D²">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="A²D² — 智能体敏捷驱动开发">
+<meta property="og:description" content="从理论出发的 LLM 工程方法论：Context 第一性原理、系统描述问题、用结构对抗不确定性。">
+<meta property="og:image" content="https://a2d2.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@a2d2dev">
+<meta name="twitter:creator" content="@neolf">
+<meta name="twitter:title" content="A²D² — 智能体敏捷驱动开发">
+<meta name="twitter:description" content="从理论出发的 LLM 工程方法论：Context 第一性原理、系统描述问题、用结构对抗不确定性。">
+<meta name="twitter:image" content="https://a2d2.dev/og.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<header class="site">
+  <div class="page">
+    <a class="brand" href="/zh">A²D²</a>
+    <nav aria-label="主导航">
+      <a href="/zh/essays">长文</a>
+      <a href="https://x.com/a2d2dev">X</a>
+      <a href="https://github.com/a2d2-dev">GitHub</a>
+      <span class="lang" role="group" aria-label="语言"><a href="/" hreflang="en" lang="en">EN</a> / <span aria-current="true">中文</span></span>
+    </nav>
+  </div>
+</header>
+<main class="page">
+<h1>A²D²</h1>
+<p class="sub">智能体敏捷驱动开发 · <span lang="en">Agentic Agile Driven Development</span></p>
+<p class="byline">作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</p>
+
+<p>A²D² 从理论出发，而不是从工具出发：大模型是一台什么样的机器；当它成为执行者，为什么输入质量成为主导约束；以及为什么要用系统结构、而不是元件精度，去对抗它的不确定性。</p>
+<p>这套理论由三篇文章展开。下面是三篇原文的标题与摘要，均链接到微信公众号原文；也可以阅读<a href="/zh/essays">一篇连贯的长文整理</a>。</p>
+
+<h2 id="theory">文章</h2>
+<ol class="essay-list">
+  <li id="context-first-principles">
+    <h3><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">Context 第一性原理：从大模型的物理约束推导工程架构</a></h3>
+    <p>你知道 prompt 要写好，知道 context 不能太长，知道输出要验证，知道多 Agent 比单 Agent 好——但这些“知道”是散落的经验，不是统一的理论。本文从四条核心约束出发：L0，Prompt 使 LLM 从弥散状态收敛到特定方向，但 context 有限，收敛有代价；L1，项目特定的知识只能通过有限的 context window 获取；L2，推理过程是无状态的，每次调用从零开始；L3，输出是概率的，不是确定的。经由桥接定理——选择性加载、上下文衰变、频率匹配持久化、后果比例验证、反馈归因——推导出一套工程架构：收敛工程、知识分层、工具与环境、会话生命周期管理、持久化栈、信任层次和反馈回路，并讨论约束之间的交叉张力。四条约束，一套架构；约束不可违反，架构可以演进。</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">阅读原文 ↗</a> · <a href="/zh/essays#constraints">长文中的对应部分</a></p>
+  </li>
+  <li id="system-description-problem">
+    <h3><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">系统描述问题：当瓶颈从执行层转移到描述层</a></h3>
+    <p>人类开发者是补偿器，LLM 是条件性的放大器：输入信号有缺口时，它不会停下来说“信息不足”，而是用训练数据中最常见的统计模式填充缺口——而你不知道它在哪里做了填充。当执行者从补偿器变成放大器，输入质量成为主导约束。本文用金观涛《控制论与科学方法论》的框架，把软件开发看作缩小可能性空间的过程，把随机控制、有记忆控制、共轭控制、负反馈调节四种递进的控制方法，映射到 AI 编码的四个阶段：Vibe Coding、规则驱动、Spec 驱动和 Harness Engineering。进而推导 Spec 侧的工程方案（按变更频率分层、单元自包含、源头唯一与血缘追踪）和 Harness 侧的检测缺口（完备性、结构一致性、语义一致性），并重新定义人类的角色：维持共轭控制的两端——高质量的 L 过程和 L' 过程。</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">阅读原文 ↗</a> · <a href="/zh/essays#description">长文中的对应部分</a></p>
+  </li>
+  <li id="structure-vs-uncertainty">
+    <h3><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">用结构对抗不确定性：LLM 工程的控制论工具箱</a></h3>
+    <p>《系统描述问题》的补论。1927 年，Harold Black 在贝尔实验室没有去造更好的真空管，而是改变了系统结构，由此得到一条定理：闭环系统的整体精度主要取决于反馈通道的精度，而不是前向通道的精度。LLM 就是那个不精确的真空管。由此得到元定理——系统精度是结构的函数——及其推论：把传感器基础设施当作一等公民来投资。本文铺开控制论的完整工具箱：冗余与表决、级联控制、前馈补偿、滤波与状态估计、自适应控制、鲁棒控制，覆盖时间、空间、信息、架构、学习五个维度，逐一映射到 LLM 工程，并把“偏差能被检测到吗？”扩展为五个检查问题。大多数团队应该从反馈和前馈开始。</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">阅读原文 ↗</a> · <a href="/zh/essays#structure">长文中的对应部分</a></p>
+  </li>
+</ol>
+
+<h2 id="next">下一篇</h2>
+<p>下一篇将讨论在与 LLM 的沟通中区分“对话”与“任务”，并由此引出 A²D² 的领域对象。标题未定。</p>
+
+<h2 id="tooling">工具</h2>
+<p>相应的工具是这套方法论的实践实现，将在之后发布。</p>
+</main>
+<footer>
+  <div class="page">
+    <span>A²D² — 智能体敏捷驱动开发 · 作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</span>
+    <nav aria-label="链接">
+      <a href="https://x.com/a2d2dev">X · @a2d2dev</a>
+      <a href="https://x.com/neolf">X · @neolf</a>
+      <a href="https://github.com/a2d2-dev">GitHub · a2d2-dev</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

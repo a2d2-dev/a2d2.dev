@@ -8,14 +8,17 @@
 <meta name="description" content="A²D² (Agentic Agile Driven Development) starts from theory: what LLMs physically are, why input quality becomes the dominant constraint, and how structure counters uncertainty. Three essays by @neolf (Neov).">
 <meta name="author" content="Neov (@neolf)">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
 <link rel="canonical" href="https://a2d2.dev/">
+<link rel="alternate" hreflang="en" href="https://a2d2.dev/">
+<link rel="alternate" hreflang="zh-CN" href="https://a2d2.dev/zh">
+<link rel="alternate" hreflang="x-default" href="https://a2d2.dev/">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://a2d2.dev/">
 <meta property="og:site_name" content="A²D²">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta property="og:title" content="A²D² — Agentic Agile Driven Development">
 <meta property="og:description" content="A theory-first methodology for engineering with LLM agents: context first principles, the system description problem, and structure against uncertainty.">
 <meta property="og:image" content="https://a2d2.dev/og.png">
@@ -25,100 +28,61 @@
 <meta name="twitter:site" content="@a2d2dev">
 <meta name="twitter:creator" content="@neolf">
 <meta name="twitter:title" content="A²D² — Agentic Agile Driven Development">
-<meta name="twitter:description" content="A theory-first methodology for engineering with LLM agents. Three essays by @neolf (Neov).">
+<meta name="twitter:description" content="A theory-first methodology for engineering with LLM agents: context first principles, the system description problem, and structure against uncertainty.">
 <meta name="twitter:image" content="https://a2d2.dev/og.png">
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
-<header class="nav">
-  <div class="wrap">
-    <a class="logo" href="/" aria-label="A²D² home"><img src="/favicon.svg" alt="" width="28" height="28">A²D²</a>
+<header class="site">
+  <div class="page">
+    <a class="brand" href="/">A²D²</a>
     <nav aria-label="Primary">
-      <a class="hide-sm" href="#theory">Theory</a>
       <a href="/essays">Essay</a>
       <a href="https://x.com/a2d2dev">X</a>
-      <a class="hide-sm" href="https://github.com/a2d2-dev">GitHub</a>
+      <a href="https://github.com/a2d2-dev">GitHub</a>
+      <span class="lang" role="group" aria-label="Language"><span aria-current="true">EN</span> / <a href="/zh" hreflang="zh-CN" lang="zh-CN">中文</a></span>
     </nav>
   </div>
 </header>
+<main class="page">
+<h1>A²D²</h1>
+<p class="sub">Agentic Agile Driven Development · <span lang="zh-CN">智能体敏捷驱动开发</span></p>
+<p class="byline">by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
 
-<main id="top">
-  <div class="hero">
-    <div class="wrap">
-      <span class="eyebrow"><b>●</b> Theory first</span>
-      <h1>A<sup>2</sup>D<sup>2</sup></h1>
-      <p class="expand"><span>A</span>gentic <span>A</span>gile <span>D</span>riven <span>D</span>evelopment</p>
-      <p class="zh" lang="zh-CN">智能体敏捷驱动开发</p>
-      <p class="lede">A²D² begins with theory, not tooling: <strong>what kind of machine an LLM is</strong>, <strong>why input quality becomes the dominant constraint</strong> once it executes our work, and <strong>how system structure — not component precision — counters its uncertainty</strong>.</p>
-      <div class="cta">
-        <a class="btn primary" href="/essays">Read the essay →</a>
-        <a class="btn" href="#theory">The three originals</a>
-      </div>
-      <p class="byline">by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
-    </div>
-  </div>
+<p>A²D² begins with theory, not tooling: what kind of machine an LLM is, why input quality becomes the dominant constraint once it executes our work, and how system structure — not component precision — counters its uncertainty.</p>
+<p>The theory is laid out in three essays, originally written in Chinese. Below are English titles and abstracts, each linking to the Chinese original. For one continuous English reading, see <a href="/essays">the essay</a>.</p>
 
-  <section id="theory">
-    <div class="wrap">
-      <p class="kicker">01 / theory</p>
-      <h2>Three essays.</h2>
-      <p class="sub">The theory behind A²D² is laid out in three essays, originally published in Chinese. Each title and abstract below is an English summary; the links go to the full Chinese originals. For one continuous English reading, see <a href="/essays">the essay</a>.</p>
+<h2 id="theory">Essays</h2>
+<ol class="essay-list">
+  <li id="context-first-principles">
+    <h3><a href="/essays#constraints">Context First Principles: Deriving Engineering Architecture from the Physical Constraints of LLMs</a></h3>
+    <p class="alt" lang="zh-CN">《Context 第一性原理：从大模型的物理约束推导工程架构》</p>
+    <p>Most of what developers know about working with agents — write good prompts, keep context short, verify outputs, use several agents — is scattered experience, not theory. This essay starts from four core constraints: prompts make a model converge from a diffuse state toward one direction, at the cost of finite context (L0, a mental model); project knowledge exists for the model only through a finite context window (L1); inference is stateless (L2); and output is probabilistic, not logically guaranteed (L3). Bridge theorems derive selective loading, context decay and optimal session length, frequency-matched persistence, consequence-proportional verification, and attributed feedback. The result is an architecture — convergence engineering, layered knowledge built from self-contained units, tools as cross-cutting channels, session lifecycle management, a persistence stack, trust layers and feedback loops — and the tensions between the constraints.</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">Original (Chinese) ↗</a> · <a href="/essays#constraints">In the English essay</a></p>
+  </li>
+  <li id="system-description-problem">
+    <h3><a href="/essays#description">The System Description Problem: When the Bottleneck Shifts from the Execution Layer to the Description Layer</a></h3>
+    <p class="alt" lang="zh-CN">《系统描述问题：当瓶颈从执行层转移到描述层》</p>
+    <p>A human developer is a compensator: gaps in the input are filled with experience, questions and conversation. An LLM is a conditional amplifier: it fills gaps with the most common patterns in its training data, fluently and confidently, and you cannot see where it did so. Once the executor changes, input quality becomes the dominant constraint. Using the cybernetic framework of Jin Guantao’s <i>Cybernetics and Scientific Methodology</i>, the essay treats software development as shrinking a possibility space and maps four progressive control methods onto four stages of AI coding: vibe coding (random control), rule files (control with memory), spec-driven development (conjugate control) and harness engineering (negative feedback). It derives what specs must become — self-contained units layered by change frequency, single-source with lineage tracking — names the missing sensors at the spec layer, and redefines the human role as the two ends of conjugate control.</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">Original (Chinese) ↗</a> · <a href="/essays#description">In the English essay</a></p>
+  </li>
+  <li id="structure-vs-uncertainty">
+    <h3><a href="/essays#structure">Countering Uncertainty with Structure: A Cybernetic Toolbox for LLM Engineering</a></h3>
+    <p class="alt" lang="zh-CN">《用结构对抗不确定性：LLM 工程的控制论工具箱》</p>
+    <p>A companion to the second essay. In 1927 Harold Black faced unstable vacuum-tube amplifiers and changed the system’s structure instead of the tubes: the precision of a closed-loop system depends mainly on its feedback channel, not its forward channel. The LLM is that imprecise tube. From this the essay states a meta-theorem — system precision is a function of structure — and its corollary: treat sensor infrastructure as a first-class investment. It then lays out six tools across five dimensions: redundancy and voting (space), cascade control (time), feedforward compensation and filtering (information), adaptive control (learning) and robust control (architecture), each mapped to LLM engineering, and extends “can deviations be detected?” into a five-question checklist. Most teams should start with feedback and feedforward.</p>
+    <p class="links"><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">Original (Chinese) ↗</a> · <a href="/essays#structure">In the English essay</a></p>
+  </li>
+</ol>
 
-      <div class="essays">
-        <article class="essay" id="context-first-principles">
-          <span class="num">ESSAY 1 · CONSTRAINTS</span>
-          <h3>Context First Principles: Deriving Engineering Architecture from the Physical Constraints of LLMs</h3>
-          <p class="zt" lang="zh-CN">《Context 第一性原理：从大模型的物理约束推导工程架构》</p>
-          <p class="abs">Most of what developers know about working with agents — write good prompts, keep context short, verify outputs, use several agents — is scattered experience, not theory. This essay starts from four core constraints: prompts make a model converge from a diffuse state toward one direction, at the cost of finite context (L0, a mental model); project knowledge exists for the model only through a finite context window (L1); inference is stateless (L2); and output is probabilistic, not logically guaranteed (L3). Bridge theorems derive selective loading, context decay and optimal session length, frequency-matched persistence, consequence-proportional verification, and attributed feedback. The result is an architecture — convergence engineering, layered knowledge built from self-contained units, tools as cross-cutting channels, session lifecycle management, a persistence stack, trust layers and feedback loops — and the tensions between the constraints.</p>
-          <div class="links">
-            <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">Read the original (Chinese) ↗</a>
-            <a href="/essays#constraints">In the English essay →</a>
-          </div>
-        </article>
+<h2 id="next">Coming next</h2>
+<p>The next essay distinguishes conversation from task in how we communicate with LLMs — the distinction that leads to A²D²’s domain objects. Title to be announced.</p>
 
-        <article class="essay" id="system-description-problem">
-          <span class="num">ESSAY 2 · DESCRIPTION</span>
-          <h3>The System Description Problem: When the Bottleneck Shifts from the Execution Layer to the Description Layer</h3>
-          <p class="zt" lang="zh-CN">《系统描述问题：当瓶颈从执行层转移到描述层》</p>
-          <p class="abs">A human developer is a compensator: gaps in the input are filled with experience, questions and conversation. An LLM is a conditional amplifier: it fills gaps with the most common patterns in its training data, fluently and confidently, and you cannot see where it did so. Once the executor changes, input quality becomes the dominant constraint. Using the cybernetic framework of Jin Guantao’s <i>Cybernetics and Scientific Methodology</i>, the essay treats software development as shrinking a possibility space and maps four progressive control methods onto four stages of AI coding: vibe coding (random control), rule files (control with memory), spec-driven development (conjugate control) and harness engineering (negative feedback). It derives what specs must become — self-contained units layered by change frequency, single-source with lineage tracking — names the missing sensors at the spec layer, and redefines the human role as the two ends of conjugate control.</p>
-          <div class="links">
-            <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">Read the original (Chinese) ↗</a>
-            <a href="/essays#description">In the English essay →</a>
-          </div>
-        </article>
-
-        <article class="essay" id="structure-vs-uncertainty">
-          <span class="num">ESSAY 3 · STRUCTURE</span>
-          <h3>Countering Uncertainty with Structure: A Cybernetic Toolbox for LLM Engineering</h3>
-          <p class="zt" lang="zh-CN">《用结构对抗不确定性：LLM 工程的控制论工具箱》</p>
-          <p class="abs">A companion to the second essay. In 1927 Harold Black faced unstable vacuum-tube amplifiers and changed the system’s structure instead of the tubes: the precision of a closed-loop system depends mainly on its feedback channel, not its forward channel. The LLM is that imprecise tube. From this the essay states a meta-theorem — system precision is a function of structure — and its corollary: treat sensor infrastructure as a first-class investment. It then lays out six tools across five dimensions: redundancy and voting (space), cascade control (time), feedforward compensation and filtering (information), adaptive control (learning) and robust control (architecture), each mapped to LLM engineering, and extends “can deviations be detected?” into a five-question checklist. Most teams should start with feedback and feedforward.</p>
-          <div class="links">
-            <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">Read the original (Chinese) ↗</a>
-            <a href="/essays#structure">In the English essay →</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="card next">
-        <span class="num">COMING NEXT</span>
-        <h3>Conversation or task?</h3>
-        <p>The next essay distinguishes conversation from task in how we communicate with LLMs — the distinction that leads to A²D²’s domain objects.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="tooling">
-    <div class="wrap">
-      <p class="kicker">02 / practice</p>
-      <h2>From theory to tooling.</h2>
-      <p class="sub" style="margin-bottom:0">The tooling is the practical implementation of this methodology and will be released later.</p>
-    </div>
-  </section>
+<h2 id="tooling">Tooling</h2>
+<p>The tooling is the practical implementation of this methodology and will be released later.</p>
 </main>
-
 <footer>
-  <div class="wrap">
+  <div class="page">
     <span>A²D² — Agentic Agile Driven Development · by <a href="https://x.com/neolf">@neolf</a> (Neov)</span>
     <nav aria-label="Links">
       <a href="https://x.com/a2d2dev">X · @a2d2dev</a>
