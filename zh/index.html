@@ -15,7 +15,7 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;family=Noto+Serif+SC:wght@600&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;family=Noto+Serif+SC:wght@600&amp;display=swap">
 <link rel="stylesheet" href="/style.css">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://a2d2.dev/zh">
@@ -37,6 +37,7 @@
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">跳到正文</a>
 <header class="site">
   <div class="wrap">
     <a class="brand" href="/zh" aria-label="A²D² — 首页"><span class="mark" aria-hidden="true"></span><span class="word">A²D²</span><span class="tagline">智能体敏捷驱动开发</span></a>
@@ -48,13 +49,23 @@
     </nav>
   </div>
 </header>
-<main class="page home">
+<main class="page home" id="main" tabindex="-1">
 <section class="hero">
+ <div class="hero-main">
   <p class="kicker">A²D² · 智能体敏捷驱动开发 · <span lang="en">Agentic Agile Driven Development</span></p>
   <h1>下一代敏捷，<br class="br">由 Agent 驱动。</h1>
   <p class="lede">在 Agent 时代，重新思考软件工程。</p>
   <p class="byline">作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</p>
   <p class="actions"><a class="btn" href="/zh/essays">阅读长文 →</a><a class="btn ghost" href="#start">我们从这里开始 ↓</a></p>
+ </div>
+  <nav class="hero-index" aria-label="我们从这里开始">
+    <p class="ix-head"><span>我们从这里开始</span><span class="count">01 — 03</span></p>
+    <ol>
+      <li><a href="#context-first-principles"><span class="ix-num">01</span><span class="ix-title">Context 第一性原理</span><time datetime="2026-04-01">2026-04-01</time></a></li>
+      <li><a href="#system-description-problem"><span class="ix-num">02</span><span class="ix-title">系统描述问题</span><time datetime="2026-04-16">2026-04-16</time></a></li>
+      <li><a href="#structure-vs-uncertainty"><span class="ix-num">03</span><span class="ix-title">用结构对抗不确定性</span><time datetime="2026-04-24">2026-04-24</time></a></li>
+    </ol>
+  </nav>
 </section>
 
 <section class="block" aria-labelledby="start">
