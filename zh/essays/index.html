@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="a2d2-build" content="git-autodeploy-1">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>用结构对抗不确定性：A²D² 的理论基础 — @neolf（Neov）</title>
-<meta name="description" content="把三篇原文的理论整理为一篇长文：LLM 的四个核心约束、从补偿器到放大器、Spec 与 Harness、用结构对抗不确定性。作者 @neolf（Neov）。">
+<title>用结构对抗不确定性：A²D² 的起点 — @neolf（Neov）</title>
+<meta name="description" content="把 A²D² 起点的三篇原文整理为一篇长文：LLM 的四个核心约束、从补偿器到放大器、Spec 与 Harness、用结构对抗不确定性。作者 @neolf（Neov）。">
 <meta name="author" content="Neov (@neolf)">
 <meta name="color-scheme" content="light dark">
 <link rel="canonical" href="https://a2d2.dev/zh/essays">
@@ -22,7 +22,7 @@
 <meta property="og:site_name" content="A²D²">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:locale:alternate" content="en_US">
-<meta property="og:title" content="用结构对抗不确定性：A²D² 的理论基础">
+<meta property="og:title" content="用结构对抗不确定性：A²D² 的起点">
 <meta property="og:description" content="大模型是一台什么样的机器，为什么输入质量成为主导约束，以及如何用结构对抗不确定性。作者 @neolf（Neov）。">
 <meta property="og:image" content="https://a2d2.dev/og.png">
 <meta property="og:image:width" content="1200">
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@a2d2dev">
 <meta name="twitter:creator" content="@neolf">
-<meta name="twitter:title" content="用结构对抗不确定性：A²D² 的理论基础">
+<meta name="twitter:title" content="用结构对抗不确定性：A²D² 的起点">
 <meta name="twitter:description" content="大模型是一台什么样的机器，为什么输入质量成为主导约束，以及如何用结构对抗不确定性。作者 @neolf（Neov）。">
 <meta name="twitter:image" content="https://a2d2.dev/og.png">
 <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
@@ -50,9 +50,9 @@
 </header>
 <main class="page article">
   <header class="article-head">
-  <p class="kicker">长文 · A²D² 理论基础</p>
+  <p class="kicker">长文 · A²D² 的起点</p>
   <h1>用结构对抗不确定性</h1>
-  <p class="sub">A²D²（智能体敏捷驱动开发）的理论基础</p>
+  <p class="sub">A²D²（智能体敏捷驱动开发）的起点</p>
   <p class="byline">作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</p>
 
   <p class="muted small">本文把三篇原文的理论整理为一篇连贯的长文，内容均取自原文，是原文的精简版；每一节注明出处，完整论证请阅读原文：
