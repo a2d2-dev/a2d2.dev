@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="a2d2-build" content="git-autodeploy-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Structure Against Uncertainty: The Theory Behind A²D² — by @neolf (Neov)</title>
+<meta name="description" content="One English essay presenting the theory behind A²D²: the four constraints of LLMs, the shift from execution to description, and the cybernetic toolbox for countering uncertainty with structure. By @neolf (Neov).">
+<meta name="author" content="Neov (@neolf)">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0b0d12" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://a2d2.dev/essays">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://a2d2.dev/essays">
+<meta property="og:site_name" content="A²D²">
+<meta property="og:title" content="Structure Against Uncertainty: The Theory Behind A²D²">
+<meta property="og:description" content="What kind of machine an LLM is, why input quality becomes the dominant constraint, and how structure — not component precision — counters uncertainty. By @neolf (Neov).">
+<meta property="og:image" content="https://a2d2.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:author" content="https://x.com/neolf">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@a2d2dev">
+<meta name="twitter:creator" content="@neolf">
+<meta name="twitter:title" content="Structure Against Uncertainty: The Theory Behind A²D²">
+<meta name="twitter:description" content="The theory behind A²D², in one English essay. By @neolf (Neov).">
+<meta name="twitter:image" content="https://a2d2.dev/og.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="/" aria-label="A²D² home"><img src="/favicon.svg" alt="" width="28" height="28">A²D²</a>
+    <nav aria-label="Primary">
+      <a class="hide-sm" href="/#theory">Theory</a>
+      <a href="/essays">Essay</a>
+      <a href="https://x.com/a2d2dev">X</a>
+      <a class="hide-sm" href="https://github.com/a2d2-dev">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<article class="long">
+  <span class="eyebrow"><b>●</b> A²D² · Theory</span>
+  <h1>Structure Against Uncertainty</h1>
+  <p class="expand" style="font-size:clamp(19px,2.4vw,24px)">The theory behind A²D² — Agentic Agile Driven Development</p>
+  <p class="byline">by <a href="https://x.com/neolf">@neolf</a> (Neov)</p>
+
+  <p class="src" style="margin-top:22px">This page presents, in English and as one argument, the theory of three essays originally written in Chinese. It follows their content only. Originals:
+    <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">Context 第一性原理</a> ·
+    <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">系统描述问题</a> ·
+    <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">用结构对抗不确定性</a></p>
+
+  <nav class="toc" aria-label="Contents">
+    <p>CONTENTS</p>
+    <ol>
+      <li><a href="#machine">A machine we do not understand</a></li>
+      <li><a href="#constraints">Four constraints</a></li>
+      <li><a href="#architecture">From constraints to architecture</a></li>
+      <li><a href="#description">The executor changed: from compensator to amplifier</a></li>
+      <li><a href="#control">Development as control</a></li>
+      <li><a href="#spec-harness">Specs and harnesses</a></li>
+      <li><a href="#structure">Structure determines precision</a></li>
+      <li><a href="#humans">What remains human</a></li>
+      <li><a href="#questions">The questions that remain</a></li>
+      <li><a href="#sources">The original essays</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="machine">1. A machine we do not understand</h2>
+  <p>When you write code with an AI agent, you are not using a smarter autocomplete. You are using a machine whose operating principles differ from all traditional software. A traditional program is deterministic: given an input, its output is predictable, its state persists in memory, and it knows what it knows. An LLM is not like that.</p>
+  <p>Most developers start using this machine without understanding it. A project holds PRDs, architecture documents, deployment procedures and coding conventions — should they go into the prompt, become tools, or sit in files for the agent to look up? Usually the answer is intuition: stuff things in, and when it does not work, add more rules.</p>
+  <p>Before Newton, people knew that apples fall and that the moon does not; nobody knew the two were governed by the same law. LLM-driven development is in a similar place. We know prompts must be good, context must not be too long, outputs must be verified, several agents beat one. But these are scattered pieces of experience, not a unified theory: we do not know how they relate, which are fundamental and which derived, or when one of them will stop working. What is missing is not more experience but a framework that explains why the experience works and when it fails.</p>
+
+  <h2 id="constraints">2. Four constraints</h2>
+  <p>The framework starts from four core constraints of LLMs. L1–L3 are hard facts of the Transformer architecture. L0 is a mental model distilled from intuition and practice — not rigorously provable like the others, but with strong explanatory power.</p>
+
+  <h3>L0 — Convergence and its cost</h3>
+  <p>Before it receives any prompt, a trained LLM has a peculiar “omnipotence”: it can write poetry, act as a lawyer, debug Kubernetes network policies, or derive quantum field theory — but it <em>is</em> none of these. Its abilities coexist, undifferentiated, in its parameters. A prompt makes the model converge from many possible directions onto one: from a diffuse state that can do a bit of everything into a specific, focused intelligence.</p>
+  <p>Convergence has a cost. Not that the model’s abilities are weakened, but that finite context is occupied by role definitions and directional instructions; the more space a direction takes, the less is left for everything else. Role definitions are therefore real engineering operations, not decoration. Multi-agent setups often beat a single agent on complex tasks because they are context isolation plus task decomposition: several independent convergences, each optimizing one direction. And different task directions need isolated contexts, so that each convergence happens in a clean one.</p>
+
+  <h3>L1 — The context window is finite</h3>
+  <p>For project-specific knowledge — architecture decisions, business logic, team conventions, the current task — the context window is the model’s only source. Knowledge that is not in context does not exist for it. General knowledge lives in the weights; your project does not. And the window is finite: even million-token windows cannot hold a real project, and as context grows, the model gets worse at locating the relevant piece, like finding one box in a huge warehouse. The agent’s project knowledge is entirely determined by context, but context cannot hold everything. All project knowledge must be explicitly managed and carefully selected for loading.</p>
+
+  <h3>L2 — Every call starts from zero</h3>
+  <p>LLM inference is stateless. The “continuity” we feel is an illusion maintained by external systems that store conversation history and inject it into the next call. The model did not forget its earlier decision; it never made it — it only sees text describing that decision. Agent <em>systems</em> do have state — memory, tool state, RAG indexes, caches — but all of it is maintained outside the model. <em>The model is stateless; the system is stateful.</em> Combined with L1: the model neither knows what you did not tell it, nor remembers what it did. Anything that must survive across calls — reasons, progress, lessons — evaporates unless captured and persisted externally.</p>
+
+  <h3>L3 — Output is probabilistic, not certain</h3>
+  <p>An LLM produces the statistically most likely token sequence, not a logically correct conclusion. It can write completely wrong code fluently and confidently, without knowing it is wrong. Self-checks such as self-consistency or self-critique help, but they use the same probabilistic model to check its own output, so systematic biases go undetected. Final responsibility for verification must sit with external mechanisms — and its strength must not be uniform: renaming a variable and changing a database migration need very different checks.</p>
+
+  <h2 id="architecture">3. From constraints to architecture</h2>
+  <p>Constraints say what is limited, not what to do. A few bridge theorems take the step from constraint to solution. Each asks which <em>kind</em> of solution structure most naturally satisfies the constraints; engineering rarely has a single correct answer, and RAG, retrieval, function calling and other techniques can all work in particular cases.</p>
+  <ul>
+    <li><strong>Selective loading (from L1).</strong> Finite context plus heterogeneous knowledge means knowledge should be layered by relevance to the task and loaded independently. Without structure you can only load everything (overflow) or cut at random (losing what matters). Whatever the technique, the principle of structured management plus on-demand loading holds.</li>
+    <li><strong>Context decay (from L1 + L2 and inference efficiency).</strong> Because the KV cache makes appending cheap and editing the middle of a sequence expensive, append-only is the performance-optimal way to use context, and load order matters. As a session grows it eventually forces lossy compression: summaries replace the conversation, details and reasoning chains are lost, and — by L2 — the summary becomes the model’s whole reality. Sessions therefore have an optimal length: cut them before context decays past a threshold, persist the key outputs, and start fresh with clean, dense context.</li>
+    <li><strong>Frequency-matched persistence (from L2).</strong> Each kind of state should be persisted by a mechanism that matches how often it changes. Slow data in a fast system is wasted overhead; fast data in a slow system goes stale. Feedback loops follow from the same constraint: information produced during execution evaporates unless captured.</li>
+    <li><strong>Consequence-proportional verification (from L3).</strong> Uniform verification is either too dangerous (all automatic) or too slow (all manual). Low-risk changes pass automatically, medium-risk changes get peer review, high-risk ones are forcibly intercepted.</li>
+    <li><strong>Feedback attribution (from L2 × L3).</strong> Failures are certain, and uncaptured failures repeat. But “remember not to do that” is not feedback; effective feedback is attributed to a layer — a skill bug, missing project context, a changed environment, or a wrong role direction. Unattributed feedback is noise that consumes finite context.</li>
+  </ul>
+
+  <h3>The resulting architecture</h3>
+  <ul>
+    <li><strong>Convergence engineering (L0).</strong> A role definition is the direction vector of convergence — a set of constraints, not a persona. Multi-agent architecture is parallel independent convergence; context isolation protects its quality.</li>
+    <li><strong>Knowledge layers (L1).</strong> Project Spec (what is this project?), Decision Log (why this and not that?), Conventions (what are the rules?), Task State (what now?). Higher layers are more stable, relevant to more tasks, and loaded first; under pressure the lower layers are sacrificed. Inside each layer, knowledge must be split into <em>self-contained</em> units: a fragment that needs other fragments to be understood is not a valid loading unit — the agent will either hallucinate the gap with generic patterns or make decisions inconsistent with the project. This is high cohesion and low coupling applied to semantic dependencies rather than code calls. The most stable, important units go first in context; the most volatile go last.</li>
+    <li><strong>Tools and environment.</strong> Tools are leverage over context space (fetch a schema on demand instead of preloading it), carriers of verification (lint, tests and CI are tools), and the agent’s perception through a perceive–act loop. They are not a separate layer but a capability channel through all layers.</li>
+    <li><strong>Session lifecycle.</strong> Like a dive with a limited tank, the best strategy is not to stay down until the air runs out, but to surface at the right time — cut the session, persist outputs — and dive again with fresh air.</li>
+    <li><strong>Persistence stack (L2).</strong> Slow layer: versioned files. Medium layer: structured storage or APIs, synced at task start. Fast layer: live queries, never cached. Do not cache fast-changing data; do not live-query slow-changing data.</li>
+    <li><strong>Trust layers (L3).</strong> Automatic verification by deterministic tools; peer review by another agent or a human for logic changes; hard interception of dangerous operations — the last line of defense. The layers stack rather than substitute for each other.</li>
+    <li><strong>Feedback loops (L2 × L3).</strong> Each improvement lands precisely on one layer — the skill, the spec or decision log, the live-state interface, or the role definition — instead of an undifferentiated “lessons” pile.</li>
+  </ul>
+
+  <h3>Tensions</h3>
+  <p>The constraints pull against each other, and these tensions can only be balanced, not removed. <strong>Sharpness vs capacity (L0 × L1):</strong> role and knowledge share the same finite space; a concise role definition with complete architecture documents usually beats an elaborate persona with partial project information, so concrete behavioral rules belong in the on-demand Conventions layer. <strong>Convergence is transient (L0 × L2):</strong> roles are not remembered, only rebuilt — so a role definition is a persisted, versioned engineering artifact. <strong>Convergence is not certainty (L0 × L3):</strong> convergence moves the centre of the distribution but not its variance; convergence raises the baseline, verification catches the tail.</p>
+  <p>Every layer exists not because it looks tidy but because a constraint is there that cannot be bypassed. Four constraints, one architecture: the constraints cannot be violated; the architecture can evolve. And they point away from the traditional workflow engine that commands agents. What the system really has to do is assemble the right context for each agent at each moment, and let the agent judge what to do.</p>
+
+  <h2 id="description">4. The executor changed: from compensator to amplifier</h2>
+  <p>The second line of the argument looks not at the machine’s internals but at the control structure of software development itself.</p>
+  <p>You ask an LLM to add permission checks to a new endpoint using the project’s existing authentication module. It returns clean, type-checked code — that ignores your module and implements fresh JWT validation the way its training data most often does. You add a rule: use the existing AuthService. Next time it uses AuthService, but calls it wrongly, because it does not know about its special session-timeout handling. Rules pile up, and it feels like whack-a-mole. That feeling is right: the problem is not too few rules, it is that the nature of the executor has changed.</p>
+  <blockquote><p>A human developer is a compensator. An LLM is a conditional amplifier.</p></blockquote>
+  <p>Humans fill incomplete documentation with experience, call someone to resolve ambiguity, ask the person who made an unrecorded decision. An LLM, given complete input, executes faster and more consistently than humans within its training distribution. Given input with gaps, it does not stop and say “not enough information” — it fills the gap with the most common statistical pattern and amplifies that biased signal at machine throughput, looking just as fluent and confident as normal output. The core danger is not that this happens but that it is invisible: you do not know where it filled in. When the executor turns from compensator into amplifier, input quality turns from “nice to have” into the dominant constraint.</p>
+
+  <h2 id="control">5. Development as control</h2>
+  <p>Cybernetics studies how a system pushes itself from its current state to a target state. Following Jin Guantao’s <i>Cybernetics and Scientific Methodology</i>: the <em>possibility space</em> is every state a thing could become next. An empty repository could become any system; every line of code, design decision and interface narrows the space. When only the target remains — a system that meets all requirements and runs correctly — development is done. Software development is narrowing the possibility space to the target state; that is control. <em>Control capability</em> is the ratio of the space before and after an intervention, and every tool has a ceiling: a compiler excludes type errors but cannot judge business logic; review catches semantic issues but depends on attention.</p>
+  <p>Four progressive control methods each address the ceiling of the previous one — and they map onto four stages of AI coding that many developers have lived through:</p>
+  <ol>
+    <li><strong>Random control → vibe coding.</strong> Describe what you want, sample, retry. Without constraints the output is a sample from the training distribution. It works for small, independent tasks and collapses when the task depends on project context.</li>
+    <li><strong>Control with memory → rule files</strong> (CLAUDE.md, .cursorrules, AGENTS.md). Each rule excludes a known error. Two ceilings: at scale, rules dilute attention and get selectively ignored; more fundamentally, rules can only say “don’t do this”. Project-specific <em>correct</em> knowledge is not an error pattern. Pruning shrinks the space but cannot change it.</li>
+    <li><strong>Conjugate control → spec-driven development.</strong> Instead of working in the original space, transform an impossible problem B into a solvable problem A, solve it, and transform back: L A L′. (The classic example is Cao Chong weighing an elephant by weighing stones.) Here B is having the LLM “understand” your project’s intent directly; L is humans turning tacit intent, constraints and decisions into an explicit spec — a contract, not a rule; A is the LLM expanding that explicit structure into code, squarely within its training distribution; L′ is humans reviewing the result against intent and team taste. Specs sit where the two kinds of cognition meet: natural language is too loose for the LLM, code is too granular for human architectural intent; interfaces, state machines, constraint declarations and ADRs carry both semantic anchors and structural rigor. The spec is the one protocol language humans and LLMs truly share. Its ceiling: specs go stale, inconsistent or incomplete — and then L is distorted no matter how well A is done.</li>
+    <li><strong>Negative feedback → harness engineering.</strong> On the code side, decades of practice have closed the loop: compilers give second-level feedback, unit tests move detection to the function level, TDD puts expectations before implementation, CI wires every sensor into every commit. The earlier a deviation is found, the cheaper it is to fix. But the spec side has no sensors. Code is closed-loop; specs are open-loop, and open-loop systems drift. Harness engineering builds sensors for specs too.</li>
+  </ol>
+  <p>The stages are not alternatives but layers; total control capability is their product. And the progression is driven not only by better tools but by the changed executor. Traditional development runs on three layers — explicit documents and rules, individual tacit experience, and team consensus and culture — and the last two catch what the first misses. An LLM has only the first. The first two stages are enough for a compensator, not for an amplifier: spec-driven development and harness engineering are structural requirements, not options.</p>
+
+  <h3>Decomposition and self-containment</h3>
+  <p>All four methods assume the system fits within the controller’s capability. Beyond that, the system must first be decomposed — itself a conjugate transform: split an uncontrollable whole into separately controllable parts, control each, and merge the results. The hard requirement is that every part is <em>self-contained</em>: within the consumer’s context limits, everything needed to process the unit must be present. A unit with correct logical boundaries but missing information is, to the consumer, damaged input; the transform is lossy and the output distorted.</p>
+
+  <h2 id="spec-harness">6. Specs and harnesses</h2>
+  <h3>Spec side: make the input signal reliable</h3>
+  <p>No complex system’s full spec fits in one context, so the answer is decomposition — and decomposition is leverage: when each unit’s spec can be fully loaded, the LLM works reliably within each unit, and the sum of the units exceeds what any single context could hold. Three questions follow:</p>
+  <ul>
+    <li><strong>What dimension to split on?</strong> Change frequency: system intent (almost never changes, the anchor of everything below), architecture and boundaries (quarterly or per major version), module design and interface contracts (per iteration), tasks and state (real-time, queried). Only the middle two layers need active maintenance.</li>
+    <li><strong>How big may a unit be?</strong> A unit too large for any participant to load completely becomes an unobservable black box, and you cannot control what you cannot observe. For LLMs the limit is the context window; oversized units enter a vicious cycle of unreliable edits and growing complexity — to be prevented, not repaired.</li>
+    <li><strong>How to manage redundancy?</strong> “Declare dependencies instead of copying” works for humans who can follow a link; a context window is not a hyperlink browser. Like big data breaking database normalization — trading storage for the cost of joins — specs should trade redundancy for completeness, and manage it the way data warehouses do: one authoritative source per piece of knowledge, copies materialized on demand into self-contained inputs, and lineage recording which sources and versions each materialized context used, so that a source change marks every affected copy for refresh. A spec is not a document but data, with schema, versions, lineage and lifecycle. This is a direction, not a finished solution.</li>
+  </ul>
+  <h3>Harness side: make deviations detectable</h3>
+  <p>A harness is negative feedback: LLM output is probabilistic, so deviations must be measured and corrected continuously, letting limited control accumulate into precise output. Two parameters matter. <strong>Sensing precision</strong> decides which deviations can be seen: deterministic sensors (compilers, type checks) are precise but cover only what can be formalized; probabilistic sensors (code review, LLM-as-judge) cover more, with noise. <strong>Feedback latency</strong> decides the cost of correction: the longer a deviation goes undetected, the more it is amplified, depended on and spread.</p>
+  <p>At the spec layer the loop is broken — a deviation introduced while writing a spec is found when the code is tested, a whole development cycle later. The detection gap has three levels of rising difficulty:</p>
+  <ul>
+    <li><strong>Level 0 — spec completeness.</strong> Many code-quality problems trace back not to stale specs but to specs that were inadequate from the start. The harness’s first line of defense is a pre-sensor that checks the spec itself, after it is written and before code is generated.</li>
+    <li><strong>Level 1 — structural consistency.</strong> Do interface definitions match implementations, do referenced documents exist, are versions current? These are formalizable; OpenAPI schema validation is an early form.</li>
+    <li><strong>Level 2 — semantic consistency.</strong> Decomposition is a lossy semantic projection: some meaning is relational and belongs to no single unit (for example, “every interface touching user data must go through the central audit-log module”), and copies can drift in understanding even when lineage keeps versions in sync. And semantics deform as they pass through many stages — PRD, architecture, plan, task, code — as each step paraphrases, like a game of telephone. The response is to cut long feedback chains into short loops with sensors at each node: deterministic scripts for what can be formalized, dedicated semantic checks for the rest.</li>
+  </ul>
+  <p>Completeness is an engineering problem with solutions; structural consistency has a direction; semantic consistency has no mature answer yet. New LLM-era sensors — description compilers, and design-document tests that walk user stories through a design to find process defects at the PRD stage — move feedback earlier, but mostly address the structural level. The spec-layer harness is the most important engineering and research direction of the next stage.</p>
+
+  <h2 id="structure">7. Structure determines precision</h2>
+  <p>In 1927, Harold Black at Bell Labs faced cascaded vacuum-tube amplifiers for long-distance telephone lines, each with unstable gain. The intuitive fix was better tubes. Black changed the structure instead, feeding part of the output back to the input, and arrived at a theorem that shaped engineering ever since:</p>
+  <blockquote><p>The overall precision of a closed-loop system depends mainly on the precision of its feedback channel, not of its forward channel.</p></blockquote>
+  <p>A 10% fluctuation in forward gain can be pressed to 0.1% at the output, provided the feedback channel is precise enough. The LLM is the imprecise tube: probabilistic, invisibly deviating, and not something we can make precise within engineering control. Hence the meta-theorem: <strong>system precision is a function of structure</strong>; component precision is only one input. Feedback loops, redundant voting, formal constraints, isolation boundaries and online identification are all structure added along some dimension.</p>
+  <p>Its corollary for allocating effort: a less reliable LLM with a high-precision sensor network will tend to outperform a better LLM with crude detection. Model capability matters — forward gain sets what tasks are reachable — but once it is “enough”, returns diminish quickly, while improvements in feedback precision pay back almost linearly. Treat sensor infrastructure as a first-class investment, no lower in priority than prompt engineering, model selection or spec writing.</p>
+  <p>Six tools apply the meta-theorem across five dimensions:</p>
+  <ul>
+    <li><strong>Redundancy and voting — space.</strong> Run independent instances in parallel and compare or vote; three independent 80%-correct systems voting reach 89.6%, five reach 94.2% — but only if they are independent. Disagreement is itself a sensor signal: where instances diverge, the spec has a gap. Heterogeneous redundancy (different prompts, spec splits or models) removes shared bias at multiplied cost; it suits high-risk, irreversible points, and is the only way to raise precision within a single pass.</li>
+    <li><strong>Cascade control — time.</strong> Nest loops with different speeds and granularity: an inner loop of chain-of-thought and self-critique (seconds), a near loop of compilers, type checks, linters and unit tests (minutes), a middle loop of integration tests and code review (hours), and an outer loop of spec consistency audits (days or weeks) — today the largest gap. Each loop’s speed must match its granularity; delay a near-loop check to CI and deviations get minutes to propagate. Embed sensors in every step of an agent workflow.</li>
+    <li><strong>Feedforward compensation — information.</strong> An LLM’s biases are predictable disturbances: it fills missing context with the most common implementation. A spec injects the correct signal exactly where the model is known to drift before it starts. Feedforward handles foreseeable deviations, feedback handles the rest — which is why well-specified tasks need fewer correction rounds.</li>
+    <li><strong>Filtering and state estimation — information.</strong> As a Kalman filter fuses noisy measurements with a system model, LLM output can be fused with deterministic formal knowledge — type systems, interface contracts, architectural constraints, invariants — that prunes the space of possible outputs. Constrained decoding and JSON mode are filters already in use. Formal constraints are the system’s prior model; the richer they are, the more they filter.</li>
+    <li><strong>Adaptive control — learning.</strong> Rule files are a manual form of adaptation. Systematized: identify recurring deviation patterns from structured correction logs, model them as bias knowledge, compensate through rules, targeted spec emphasis or tool configuration — with broader coverage and conditional precision. Its ceiling is identification quality, which again depends on feedback quality.</li>
+    <li><strong>Robust control — architecture.</strong> Instead of maximizing precision, make the system insensitive to imprecision: narrow interfaces, strong types, immutable data; isolated fault domains and sandboxing; design by contract; defensive interfaces that trust no caller. Architecture for LLMs should be more conservative than for humans, because an LLM’s deviations can be directional, confident and hard to notice.</li>
+  </ul>
+  <p>Spec-driven development and harness engineering correspond to feedforward (information) and feedback (time) — the two highest-leverage dimensions. The others are not optional: redundancy for high-risk modules, cascades for long agent workflows, robust design for LLM-facing architecture, adaptation for long-running practice. Each dimension pays back independently, and the total is multiplicative. Most teams should start with feedback (sensor infrastructure) and feedforward (spec engineering), then add structure where gaps appear. LLM engineering is systems engineering, and the core capability of systems engineering is designing structure.</p>
+
+  <h2 id="humans">8. What remains human</h2>
+  <p>Conjugate control places firm demands on both of its ends, and neither can be automated away.</p>
+  <p><strong>L — writing is thinking.</strong> Turning tacit knowledge into a spec is not just recording what is already known. Writing the authentication interface, an engineer suddenly realizes: what happens when the session expires? I never thought about that. You find the gaps in your tacit knowledge by trying to say it. Outsourcing specs entirely to an LLM may yield a perfectly formatted document while losing the cognitive gain of writing it.</p>
+  <p><strong>L′ — review needs depth.</strong> The quality of reviewing LLM output depends on how deeply a person understands the system, and that depth comes from continuous interaction — writing architecture, making decisions, debugging incidents. Reduce the human to clicking “approve” and depth erodes, and both ends of conjugate control weaken.</p>
+  <p><strong>Communities of practice cannot be formalized.</strong> Team taste, the implicit standard of “good enough”, the shared “we don’t do it that way here” live in social relationships, not information, and cannot be turned into specs.</p>
+  <p>The core work of the developer shifts from “writing code” to “defining problems” and “examining solutions”. Writing code becomes an intermediate step.</p>
+
+  <h2 id="questions">9. The questions that remain</h2>
+  <p>Condensed, the theory is a set of questions.</p>
+  <ul>
+    <li><strong>What should the model become?</strong> (L0) — convergence engineering. <strong>What do we give it?</strong> (L1) — layered knowledge and session lifecycle. <strong>What must be kept?</strong> (L2) — frequency-matched persistence and feedback. <strong>What do we trust?</strong> (L3) — consequence-proportional verification. <strong>What can it do?</strong> — tools and environment.</li>
+    <li><strong>Who is the executor?</strong> A compensator tolerates ambiguity; an amplifier demands precision. <strong>Is the input signal sufficient?</strong> Specs layered, self-contained, lineage-tracked. <strong>Can deviations be detected?</strong> At the structural level there is a direction; at the semantic level it is an open problem.</li>
+    <li>And the detection question expands into a checklist: Do sensors cover the right levels, and does detection latency match how fast deviations spread? Are corrections nested from inner to outer loop, each at the right speed? Do high-risk points have independent redundancy? Is the architecture robust to LLM deviation — limited blast radius, isolated fault domains, defensive interfaces? Are the LLM’s bias patterns being identified and compensated systematically?</li>
+  </ul>
+  <p>The underlying insight of cybernetics is one: when you cannot raise component precision, counter uncertainty with structure. The more dimensions of structure, the larger the product, and the more tolerant the system becomes of imprecise components.</p>
+
+  <div class="card next" style="margin:40px 0 8px">
+    <span class="num">COMING NEXT</span>
+    <h3>Conversation or task?</h3>
+    <p>The next essay distinguishes conversation from task in how we communicate with LLMs — the distinction that leads to A²D²’s domain objects.</p>
+  </div>
+
+  <h2 id="sources">The original essays</h2>
+  <p class="src">All three are by Neov (@neolf), written in Chinese. This page is an English presentation of their argument; for the full reasoning, read the originals.</p>
+  <ul class="sources">
+    <li><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw" lang="zh-CN">《Context 第一性原理：从大模型的物理约束推导工程架构》</a><small>Context First Principles: Deriving Engineering Architecture from the Physical Constraints of LLMs — sections 1–3</small></li>
+    <li><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ" lang="zh-CN">《系统描述问题：当瓶颈从执行层转移到描述层》</a><small>The System Description Problem: When the Bottleneck Shifts from the Execution Layer to the Description Layer — sections 4–6 and 8</small></li>
+    <li><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA" lang="zh-CN">《用结构对抗不确定性：LLM 工程的控制论工具箱》</a><small>Countering Uncertainty with Structure: A Cybernetic Toolbox for LLM Engineering — section 7</small></li>
+  </ul>
+  <p class="src">The cybernetic framework is drawn, as in the originals, from Jin Guantao’s <i>Cybernetics and Scientific Methodology</i> (《控制论与科学方法论》), Harold Black’s negative-feedback amplifier, and Kalman’s optimal estimation.</p>
+  <p class="byline">— <a href="https://x.com/neolf">@neolf</a> (Neov) · <a href="/">a2d2.dev</a></p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>A²D² — Agentic Agile Driven Development · by <a href="https://x.com/neolf">@neolf</a> (Neov)</span>
+    <nav aria-label="Links">
+      <a href="https://x.com/a2d2dev">X · @a2d2dev</a>
+      <a href="https://x.com/neolf">X · @neolf</a>
+      <a href="https://github.com/a2d2-dev">GitHub · a2d2-dev</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
