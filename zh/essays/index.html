@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="a2d2-build" content="git-autodeploy-1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>用结构对抗不确定性：A²D² 的起点 — @neolf（Neov）</title>
+<meta name="description" content="把 A²D² 起点的三篇原文整理为一篇长文：LLM 的四个核心约束、从补偿器到放大器、Spec 与 Harness、用结构对抗不确定性。作者 @neolf（Neov）。">
+<meta name="author" content="Neov (@neolf)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://a2d2.dev/zh/essays">
+<link rel="alternate" hreflang="en" href="https://a2d2.dev/essays">
+<link rel="alternate" hreflang="zh-CN" href="https://a2d2.dev/zh/essays">
+<link rel="alternate" hreflang="x-default" href="https://a2d2.dev/essays">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Source+Serif+4:ital,wght@0,400;0,600;1,400&amp;family=Noto+Serif+SC:wght@600&amp;display=swap">
+<link rel="stylesheet" href="/style.css">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://a2d2.dev/zh/essays">
+<meta property="og:site_name" content="A²D²">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="用结构对抗不确定性：A²D² 的起点">
+<meta property="og:description" content="大模型是一台什么样的机器，为什么输入质量成为主导约束，以及如何用结构对抗不确定性。作者 @neolf（Neov）。">
+<meta property="og:image" content="https://a2d2.dev/og-zh.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@a2d2dev">
+<meta name="twitter:creator" content="@neolf">
+<meta name="twitter:title" content="用结构对抗不确定性：A²D² 的起点">
+<meta name="twitter:description" content="大模型是一台什么样的机器，为什么输入质量成为主导约束，以及如何用结构对抗不确定性。作者 @neolf（Neov）。">
+<meta name="twitter:image" content="https://a2d2.dev/og-zh.png">
+<script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/zh" aria-label="A²D² — 首页"><span class="mark" aria-hidden="true"></span><span class="word">A²D²</span><span class="tagline">智能体敏捷驱动开发</span></a>
+    <nav aria-label="主导航">
+      <a href="/zh/essays" aria-current="page">长文</a>
+      <a href="https://github.com/a2d2-dev">GitHub</a>
+      <a href="https://x.com/a2d2dev">X</a>
+      <span class="lang" role="group" aria-label="语言"><a href="/essays" hreflang="en" lang="en">EN</a><span aria-current="true">中文</span></span>
+    </nav>
+  </div>
+</header>
+<main class="page article">
+  <header class="article-head">
+  <p class="kicker">长文 · A²D² 的起点</p>
+  <h1>用结构对抗不确定性</h1>
+  <p class="sub">A²D²（智能体敏捷驱动开发）的起点</p>
+  <p class="byline">作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</p>
+
+  <p class="muted small">本文把三篇原文的理论整理为一篇连贯的长文，内容均取自原文，是原文的精简版；每一节注明出处，完整论证请阅读原文：
+    <a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">《Context 第一性原理》</a> ·
+    <a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题》</a> ·
+    <a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">《用结构对抗不确定性》</a></p>
+  </header>
+
+  <nav class="toc" aria-label="目录">
+    <strong>目录</strong>
+    <ol>
+      <li><a href="#machine">一台你不理解的机器</a></li>
+      <li><a href="#constraints">四个核心约束</a></li>
+      <li><a href="#architecture">从约束到架构</a></li>
+      <li><a href="#description">执行者变了：从补偿器到放大器</a></li>
+      <li><a href="#control">软件开发是缩小可能性空间的过程</a></li>
+      <li><a href="#spec-harness">Spec 与 Harness</a></li>
+      <li><a href="#structure">结构决定精度</a></li>
+      <li><a href="#humans">人类角色的重新定义</a></li>
+      <li><a href="#questions">浓缩为几个问题</a></li>
+      <li><a href="#next">下一篇</a></li>
+      <li><a href="#sources">原文</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="machine">一、一台你不理解的机器</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">《Context 第一性原理》引言 ↗</a></p>
+  <p>当你用 AI Agent 写代码时，你面对的不是一个“更聪明的自动补全”，而是一台运行原理与所有传统软件截然不同的机器。传统程序是确定性的：给定输入，输出可预测；状态在内存中持久存在；程序知道自己知道什么，也知道自己不知道什么。LLM 不是这样的。</p>
+  <p>大多数开发者在不理解这台机器的情况下就开始用它。PRD、架构文档、部署流程、编码规范，和 Agent 之间到底是什么关系？应该写进 prompt、做成工具，还是存到文件里让 Agent 自己查？大多数人的做法是凭直觉塞，跑不好就再加几条规则。</p>
+  <p>牛顿之前，人们知道苹果会落地，也知道月亮不会掉下来，但没有人知道这两件事由同一条定律支配。今天的 LLM 驱动开发处境类似：你知道 prompt 要写好、context 不能太长、输出要验证、多 Agent 比单 Agent 好，但这些是散落的经验，不是统一的理论。你缺的不是更多经验，而是一个框架，能解释这些经验为什么有效、什么时候会失效。</p>
+
+  <h2 id="constraints">二、四个核心约束</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">《Context 第一性原理》第一部分 ↗</a></p>
+  <p>L1–L3 是 Transformer 架构的硬性事实；L0 是从直觉和实践中提炼的心智模型——不能像 L1–L3 那样从数学上严格证明，但提供了一个强有力的思考框架。</p>
+  <h3>L0：收敛与代价</h3>
+  <p>一个训练好的 LLM，在接收任何 prompt 之前，“会”写诗、“会”做律师、“会”调试 Kubernetes 网络策略，但它不“是”其中任何一个。Prompt 让模型从多种可能的行为方向中收敛到特定方向。收敛有代价——不是模型能力被削弱，而是有限的 context 空间被角色定义和特定方向的指令占据。</p>
+  <blockquote><p>L0：Prompt 使 LLM 从弥散状态收敛到特定方向。收敛越精确，越有效——但 context 是有限的，分配给收敛方向的资源越多，留给其他维度的资源越少。</p></blockquote>
+  <p>由此：角色定义不是装饰，是实质性的工程操作；复杂任务中多 Agent 往往优于单 Agent，其本质是上下文隔离加任务分解；不同任务方向之间需要上下文隔离，让每次收敛都发生在干净的 context 中。</p>
+  <h3>L1：上下文窗口有限</h3>
+  <p>对于项目特定的知识——架构决策、业务逻辑、团队约定、当前任务——LLM 只能通过 context window 获取；没有被注入 context 的项目知识，对 LLM 不存在。而 context window 的容量是有限的，信息量增加时，在大量信息中找到相关片段也会变得更困难。所有项目特定的知识，都必须被显式管理，并且精挑细选地加载。</p>
+  <h3>L2：每次调用从零开始</h3>
+  <p>LLM 的推理过程是无状态的。我们感受到的“连续性”是由外部系统维持的幻觉：它不是“忘了上次的决策”，而是“从未做过那个决策”，只是看到了一段描述那个决策的文本。“模型无状态，系统有状态”。一切需要跨调用存活的信息，如果不被外部系统显式捕获和持久化，就会随调用结束而蒸发。</p>
+  <h3>L3：输出是概率的，不是确定的</h3>
+  <p>LLM 生成的是统计上最可能的 token 序列，不是逻辑上正确的结论。它可以流畅、自信地写出完全错误的代码，而且自己不知道是错的。自我验证本质上是用同一个概率模型检查同一个概率模型的输出，系统性偏差无法被自身发现。最终验证责任必须由外部机制承担，而且验证力度不能一刀切。</p>
+
+  <h2 id="architecture">三、从约束到架构</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">《Context 第一性原理》第二至四部分、结语 ↗</a></p>
+  <p>约束只告诉你哪些方向受限。从约束到方案，由几条桥接定理完成；它们论证的是一类方案结构的优势，而不是唯一正确答案。</p>
+  <ul>
+    <li><strong>定理一：选择性加载</strong>（从 L1）。有限上下文 + 异构知识 → 知识应该按任务相关度分层，独立加载。不论用 RAG 还是工具调用，“结构化管理 + 按需加载”的原则都成立。</li>
+    <li><strong>定理 1.5：上下文衰变</strong>（从 L1 + L2 + 推理效率）。KV Cache 使 append-only 成为性能最优的使用方式，加载顺序影响效率；context 触达上限后被迫有损压缩，压缩后的摘要就是模型的全部现实。Session 存在最优长度：在衰变到阈值之前主动切断，持久化关键产出，开启新 session。</li>
+    <li><strong>定理二：频率匹配持久化</strong>（从 L2）。每类状态的持久化机制应匹配其变更节奏：慢变数据放进快系统是不必要的开销，快变数据放进慢系统会过期。反馈回路是对抗无状态性的关键手段。</li>
+    <li><strong>定理三：后果比例验证</strong>（从 L3）。验证强度应与错误代价成正比：低风险自动通过，中风险同行审查，高风险强制拦截。</li>
+    <li><strong>交叉推导：反馈归因</strong>（从 L2 × L3）。有效的反馈必须归因到具体的层——Skill、项目上下文、环境、角色收敛方向。没有归因的反馈就是噪声。</li>
+  </ul>
+  <h3>推导出的架构</h3>
+  <ul>
+    <li><strong>收敛工程</strong>：角色定义是收敛的方向向量；多 Agent 是多次独立收敛的并行执行；上下文隔离保护收敛质量。</li>
+    <li><strong>知识分层</strong>：项目规格层（这个项目是什么）、决策记录层（为什么这么做）、约定层（做事的规矩）、任务状态层（现在该做什么）。越靠上越稳定、越优先加载。每层内部的知识要拆成可以独立加载、独立理解的自包含单元——这是高内聚、低耦合在语义依赖上的延伸。</li>
+    <li><strong>工具与环境</strong>：工具是 context 空间的杠杆、验证的载体；环境反馈是 Agent 的“感知”。它们不是独立的层，而是贯穿所有层的能力通道。</li>
+    <li><strong>会话生命周期管理</strong>：像深潜一样，不是在水下耗到氧气用完，而是在合适的时机浮上来换气，再带着新的氧气潜下去。</li>
+    <li><strong>持久化栈</strong>：慢变层用版本化文件，中变层用结构化存储或 API，快变层实时查询。不要缓存快变数据，不要实时查询慢变数据。</li>
+    <li><strong>信任层次</strong>：自动验证层、同行审查层、强制拦截层，三层叠加而非替代。</li>
+    <li><strong>反馈回路</strong>：每一次改进都精确地落在某一层上，而不是一股脑倒进一个“经验库”。</li>
+  </ul>
+  <h3>交叉张力</h3>
+  <p><strong>L0 × L1 锐度—容量权衡</strong>：角色定义和项目知识共享同一个有限空间，具体行为规则应放在按需加载的约定层。<strong>L0 × L2 收敛的瞬时性</strong>：角色不会被“记住”，只会被“重建”，所以角色定义是需要持久化、版本化的工程产物。<strong>L0 × L3 收敛不等于确定</strong>：收敛提高基准线，验证捕获尾部风险，两者互补。</p>
+  <p>每一层的存在都不是“这样组织比较清爽”，是约束在那里，你绕不过去。四条约束，一套架构；约束不可违反，架构可以演进。而这些约束指向的不是一个发号施令的 workflow engine：系统真正需要做的，是为每个 Agent 在每个时刻组装正确的 context，然后让它自己判断该做什么。</p>
+
+  <h2 id="description">四、执行者变了：从补偿器到放大器</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题》引言 ↗</a></p>
+  <p>你让 LLM 用项目已有的认证模块实现一个新接口的权限校验。它交回的代码干净、流畅、类型检查通过，却完全没用你的认证模块，而是按训练数据里最常见的方式实现了一套新的 JWT 校验。你加规则“使用项目已有的 AuthService”，下次它用了，但调用方式不对，因为它不知道 AuthService 有特殊的会话超时处理。规则越加越多，像是在打地鼠。根本问题不在于规则写得不够多，而在于执行者的性质变了。</p>
+  <blockquote><p>人类开发者是补偿器。LLM 是条件性的放大器。</p></blockquote>
+  <p>输入信号有缺陷，人类用经验把它补偿回正确方向。LLM 在输入完整时是高效的执行者；但输入有缺口时，它会用训练数据中最常见的统计模式填充缺口，并以每秒级的吞吐量放大这个被偏置污染过的信号，看起来和正常输出一样流畅、自信。放大器行为的核心危险在于隐蔽性：你不知道 LLM 在哪里做了填充。当执行者从补偿器变成放大器，输入质量从“有了更好”变成了主导约束。</p>
+
+  <h2 id="control">五、软件开发是缩小可能性空间的过程</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题》第一、二部分 ↗</a></p>
+  <p>金观涛在《控制论与科学方法论》中从可能性空间出发定义控制能力，给出四种递进的控制方法。一个空白的代码仓库，可能性空间几乎是无限的；每写一行代码、每做一个设计决策都在缩小这个空间。软件开发 = 通过一系列操作把可能性空间缩小到目标状态，这就是控制。四种控制方法恰好对应 AI 编码的四个阶段：</p>
+  <ol>
+    <li><strong>随机控制 = Vibe Coding</strong>：描述想要什么，不满意就换个说法再来。任务小而独立时有效；有上下文依赖时，可能性空间越大，效率越低。</li>
+    <li><strong>有记忆控制 = 规则驱动</strong>（CLAUDE.md、.cursorrules、AGENTS.md）：每条规则排除一类已知错误。天花板有两层：规则多了，注意力被稀释，LLM 开始选择性遵守；更根本的是，规则只能表达“不要这样做”，而项目独有的“正确知识”不是错误模式——规则剪枝只能缩小空间，无法换空间。</li>
+    <li><strong>共轭控制 = Spec 驱动</strong>：用 LAL' 结构把做不了的问题 B 转换成能做的问题 A（如曹冲称象）。L 是人类把隐性的意图、约束和设计决策转化为显式的 Spec；A 是 LLM 在显式结构上做代码展开；L' 是人类用隐性知识审视产出。Spec 处在两种认知方式的交汇点上，是人类和 LLM 唯一共享的协议语言。天花板在于 Spec 本身可能过期、不一致、不完备。</li>
+    <li><strong>负反馈调节 = Harness Engineering</strong>：代码侧已有编译器、单元测试、TDD、CI 构成闭合回路，但 Spec 侧没有对应的传感器。代码是闭环控制的，Spec 是开环的，开环系统在扰动中必然漂移。Harness Engineering 的目标是给 Spec 也建立传感器。</li>
+  </ol>
+  <p>四个阶段是叠加的，总控制能力是四层的乘积。传统开发中，显式文档与规则之外，还有个人的隐性经验和团队的共识与文化在兜底；LLM 没有后两层。前两个阶段对补偿器够用，对放大器不够——Spec 驱动和 Harness Engineering 是结构性要求，不是可选项。</p>
+  <p>复杂系统还需要先分解。分解本身是一次共轭控制，它有一个硬性要求：每个子系统必须自包含——在消费者的上下文约束之内，处理该单元所需的信息必须完整。</p>
+
+  <h2 id="spec-harness">六、Spec 与 Harness</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题》第三部分 ↗</a></p>
+  <h3>Spec 侧：让输入信号可靠</h3>
+  <p>复杂系统的完整 Spec 远超任何单次 context。解法是分解，分解是杠杆；其前提只有一个：每个单元必须自包含。</p>
+  <ul>
+    <li><strong>按变更频率分层</strong>：系统意图（最稳定，是所有下层的锚点）、架构与边界、模块设计与接口契约、任务与状态（实时变动，查询获取）。真正需要主动维护的只有中间两层。</li>
+    <li><strong>控制单元大小</strong>：大到无法被完整加载的单元会变成不可观测的黑箱。这是一个需要预防而非修复的约束。</li>
+    <li><strong>源头唯一，副本按需物化，血缘追踪保证一致性</strong>：LLM 的 context 窗口不是超链接浏览器，冗余是必须存在的。像大数据打破数据库范式一样用冗余换完整性，并借鉴数据血缘管理冗余。Spec 不是“文档”，而是“数据”——这是方向，不是现成的解法。</li>
+  </ul>
+  <h3>Harness 侧：让偏差可检测</h3>
+  <p>Harness 的本质是负反馈，关键参数是感知精度和反馈延迟：确定性传感器精度高但只覆盖可形式化的偏差，概率性传感器覆盖更广但有噪声；反馈越靠前，成本越低。而这条回路在 Spec 层断了。检测缺口有三个层次：</p>
+  <ul>
+    <li><strong>第零层：Spec 自身的完备性</strong>。大多数代码质量问题的根因不是 Spec 过期，而是 Spec 从一开始就不合格。Harness 的第一道防线是事前传感器。</li>
+    <li><strong>第一层：结构一致性</strong>。接口定义和实现是否匹配、引用的文档是否存在；OpenAPI 的 schema 校验是一个雏形。</li>
+    <li><strong>第二层：语义一致性</strong>。分解是有损的语义投影，关系性的语义不属于任何单一单元；语义在 PRD → 架构文档 → 开发计划 → 任务描述 → 代码的多环节传递中变形衰减，像“传话游戏”。应对策略是把长反馈链切断为多个短反馈回路，在每个中间节点插入传感器。</li>
+  </ul>
+  <p>Spec 完备性是工程问题，有解法；结构一致性有方向；语义一致性目前没有成熟方案。描述编译器和设计文档测试是有价值的新方向，但主要解决第一层问题。Spec 层的 Harness 是下一阶段最重要的工程和研究方向。</p>
+
+  <h2 id="structure">七、结构决定精度</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">《用结构对抗不确定性》全文 ↗</a></p>
+  <p>1927 年，Harold Black 面对增益不稳定的真空管放大器级联。他没有去造更好的真空管，而是把一部分输出反馈回输入端，形成闭环：</p>
+  <blockquote><p>闭环系统的整体精度主要取决于反馈通道的精度，而不是前向通道的精度。</p></blockquote>
+  <p>前向通道的增益波动 10%，闭环输出的波动可以被压到 0.1%。LLM 就是那个不精确的真空管。元定理：<strong>系统精度是结构的函数，元件精度只是众多输入变量之一。</strong>推论：一个不太靠谱的 LLM 加上高精度的传感器网络，总体表现会好于一个更好的 LLM 加上粗糙的检测；把传感器基础设施当作一等公民来投资。</p>
+  <ul>
+    <li><strong>冗余与表决（空间）</strong>：三个正确率 80% 的独立系统做多数表决，整体正确率 89.6%；五个系统 94.2%。前提是“独立”。分歧点 = Spec 缺口的定位器。对高风险、不可逆的决策节点，冗余是唯一能在单次执行中提升精度的方法。</li>
+    <li><strong>级联控制（时间）</strong>：内环（秒级 self-critique）、近环（分钟级编译器、类型检查、单元测试）、中环（小时级集成测试与 code review）、外环（天级或周级 Spec 一致性审计）。每层的响应速度必须匹配它的检测粒度；Agent 的工作流应该把传感器嵌入到每一步。</li>
+    <li><strong>前馈补偿（信息）</strong>：LLM 的偏置是可预测的扰动。Spec 在 LLM 开始工作之前把正确信号注入它已知会偏的方向；前馈处理可预见的偏差，反馈处理不可预见的偏差。</li>
+    <li><strong>滤波与状态估计（信息）</strong>：类型系统、接口契约、架构约束、不变量声明是系统的先验模型，用确定性知识压缩 LLM 输出的不确定性空间；约束解码、JSON mode 就是滤波。</li>
+    <li><strong>自适应控制（学习）</strong>：规则驱动是自适应控制的手动版本。系统化的做法是辨识、建模、补偿；其天花板是辨识的精度，又回到反馈通道的精度。</li>
+    <li><strong>鲁棒控制（架构）</strong>：不追求精度最优，而是让系统对不精确不敏感——缩小 LLM 的可影响范围、隔离故障域、契约式设计、防御性接口设计。面向 LLM 的架构应该比面向人类的更保守。</li>
+  </ul>
+  <p>Spec 驱动和 Harness Engineering 对应信息维度的前馈和时间维度的反馈，杠杆最大；其他维度在特定场景下提供不可替代的控制能力。大多数团队应该从反馈（传感器基础设施）和前馈（Spec 工程）开始，再根据实际问题逐步增加结构。LLM 工程是系统工程，系统工程的核心能力是设计结构。</p>
+
+  <h2 id="humans">八、人类角色的重新定义</h2>
+  <p class="src">出处：<a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题》第四部分、结语 ↗</a></p>
+  <p><strong>L 过程的不可替代性</strong>：写设计文档时，工程师在写的过程中发现自己不知道什么——“Session 过期了怎么处理？我没想过这个。”写作本身就是认知行为。把 Spec 的撰写完全外包给 LLM，可能得到格式完美的文档，却失去认知上的收益。</p>
+  <p><strong>L' 过程依赖认知深度</strong>：这种深度来自与系统的持续交互。如果人类只做“看一眼然后点通过”，认知深度会退化，共轭控制的两端都变弱。</p>
+  <p><strong>实践共同体不可形式化</strong>：团队的代码品味、对“足够好”的隐性标准、“我们这里不这样做”的默契，载体不是信息，是社会关系。</p>
+  <p>开发者的核心能力从“写代码”变成了“定义问题”和“审视解”——写代码变成了中间步骤。</p>
+
+  <h2 id="questions">九、浓缩为几个问题</h2>
+  <ul>
+    <li>L0：让它成为什么？L1：给它什么？L2：留住什么？L3：信任什么？贯穿：它能做什么？</li>
+    <li>执行者是谁？补偿器容忍模糊，放大器要求精确。输入信号够用吗？Spec 分层、自包含、血缘可追踪。偏差能被检测到吗？结构层有方向，语义层是开放问题。</li>
+    <li>扩展为一组检查项：传感器覆盖了哪些层次、检测延迟是否匹配偏差的传播速度？修正是否分层嵌套？高风险节点是否有冗余保护？架构是否对 LLM 的偏差具有鲁棒性？LLM 的偏置模式是否在被系统性地辨识和补偿？</li>
+  </ul>
+  <p>控制论的底层洞察是统一的：当你无法提升元件精度时，用结构对抗不确定性。结构的维度越多，乘积越大，系统对元件不精确的容忍度越高。</p>
+
+  <h2 id="next">下一篇</h2>
+  <p>下一篇将讨论在与 LLM 的沟通中区分“对话”与“任务”，并由此引出 A²D² 的领域对象。标题未定。</p>
+
+  <h2 id="sources">原文</h2>
+  <p class="muted small">三篇均由 Neov（@neolf）撰写。</p>
+  <ul>
+    <li><a href="https://mp.weixin.qq.com/s/ssC4RmuP1kvoBcZUZZzAFw">《Context 第一性原理：从大模型的物理约束推导工程架构》</a> <br><span class="muted small">对应第一至三节</span></li>
+    <li><a href="https://mp.weixin.qq.com/s/ylcrFnhIS02KFY5njhzpKQ">《系统描述问题：当瓶颈从执行层转移到描述层》</a> <br><span class="muted small">对应第四至六节、第八节</span></li>
+    <li><a href="https://mp.weixin.qq.com/s/EA1BHgkol7j_IokcULheFA">《用结构对抗不确定性：LLM 工程的控制论工具箱》</a> <br><span class="muted small">对应第七节</span></li>
+  </ul>
+  <p class="muted small">控制论框架引自 Black（负反馈放大器）、Kalman（最优估计）和金观涛《控制论与科学方法论》。</p>
+  <p class="byline">—— <a href="https://x.com/neolf">@neolf</a>（Neov）· <a href="/zh">a2d2.dev</a></p>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-brand">
+      <span class="word">A²D²</span>
+      <p>A²D² — 智能体敏捷驱动开发 · 作者 <a href="https://x.com/neolf">@neolf</a>（Neov）</p>
+    </div>
+    <nav aria-label="链接">
+      <a href="https://x.com/a2d2dev">X · @a2d2dev</a>
+      <a href="https://x.com/neolf">X · @neolf</a>
+      <a href="https://github.com/a2d2-dev">GitHub · a2d2-dev</a>
+    </nav>
+    <span class="lang" role="group" aria-label="语言"><a href="/essays" hreflang="en" lang="en">EN</a><span aria-current="true">中文</span></span>
+  </div>
+</footer>
+</body>
+</html>
